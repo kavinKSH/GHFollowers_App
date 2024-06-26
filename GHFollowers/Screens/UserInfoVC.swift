@@ -22,6 +22,7 @@ class UserInfoVC: DataLoadingVC {
     
     var itemArray: [UIView] = []
     var userName: String!
+    var page: Int = 1
     
     weak var delegate: userInfoDelegate!
     
@@ -37,7 +38,7 @@ class UserInfoVC: DataLoadingVC {
         showLodingView()
         Task {
             do {
-                let users = try await NetworkManager.shared.getUsers(userName: userName)
+                let users = try await NetworkManager.shared.getUsers(endpoints: .getUsers(userName: userName, page: page))
                 configureUI(for: users)
                 stopLoadingView()
             }catch {

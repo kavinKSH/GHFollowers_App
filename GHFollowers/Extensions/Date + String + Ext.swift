@@ -14,6 +14,7 @@ extension String {
         dateFormeter.locale = Locale(identifier: "en_US_POSIX")
         dateFormeter.timeZone = .current
         return dateFormeter.date(from: self)
+//        2021-06-23T15:58:08.489Z
     }
 }
 
@@ -34,7 +35,6 @@ extension String {
     }
 }
 extension Date {
-    
     func convertDateFormet() -> String {
         return formatted(.dateTime.month().year())
     }

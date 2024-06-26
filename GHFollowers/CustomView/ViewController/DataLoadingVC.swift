@@ -20,7 +20,6 @@ class DataLoadingVC: UIViewController {
         view.addSubview(containerView)
         containerView.backgroundColor   = .systemBackground
         containerView.alpha             = 0
-        
         UIView.animate(withDuration: 0.25) {
             self.containerView.alpha = 0.8
         }

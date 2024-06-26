@@ -8,19 +8,17 @@
 import UIKit
 
 class FollowersListVC: DataLoadingVC {
-    
     enum Section { case main }
-    
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Followers>!
     
-    var userName: String!
-    var page:Int                            = 1
-    var hasMoreFollowers: Bool              = true
-    var isSearching: Bool                   = false
-    var isLoadingMoreFollowers:Bool         = false
-    var followers           :[Followers]    = []
-    var filteredFollowers   :[Followers]    = []
+    var userName                            : String!
+    var page                                : Int = 1
+    var hasMoreFollowers                    : Bool = true
+    var isSearching                         : Bool = false
+    var isLoadingMoreFollowers              : Bool = false
+    var followers                           : [Followers] = []
+    var filteredFollowers                   : [Followers] = []
     
     init(userName: String) {
         super.init(nibName: nil, bundle: nil)
@@ -50,7 +48,7 @@ class FollowersListVC: DataLoadingVC {
     }
     
     override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
-        if followers.isEmpty && !isLoadingMoreFollowers {
+        if followers.isEmpty && isSearching {
             var config = UIContentUnavailableConfiguration.empty()
             config.image = .init(systemName: "person.slash")
             config.text = "No Followers"
@@ -90,13 +88,12 @@ class FollowersListVC: DataLoadingVC {
             self.setNeedsUpdateContentUnavailableConfiguration()
         }
     }
-
     
     @objc func updateFavoritesVC() {
         showLodingView()
         Task {
             do {
-                let user = try await NetworkManager.shared.getUsers(userName: userName)
+                let user = try await NetworkManager.shared.getUsers(endpoints: .getFollowers(userName: userName, page: page))
                 let favorite = Followers(login: user.login, avatarUrl: user.avatarUrl)
                 stopLoadingView()
                 addUserFavorites(with: favorite)
@@ -201,7 +198,6 @@ extension FollowersListVC: UISearchResultsUpdating {
 }
 
 extension FollowersListVC: userInfoDelegate {
-    
     func getSelectedUserFollowerList(userName: String) {
         self.userName = userName
         title = userName
@@ -211,3 +207,5 @@ extension FollowersListVC: userInfoDelegate {
         getFollowersData(userName: userName, page: page)
     }
 }
+
+

@@ -21,6 +21,7 @@ extension UIViewController {
             presentGFAlert(title: "Invalid URL", message: "The url attached this user is Invalid", buttonTitle: "Ok")
             return
         }
+        
         let safariVC = SFSafariViewController(url:url)
         safariVC.preferredControlTintColor = .systemGreen
         present(safariVC, animated: true)

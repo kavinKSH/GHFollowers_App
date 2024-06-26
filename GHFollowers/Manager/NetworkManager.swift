@@ -13,9 +13,6 @@ struct NetworkManager {
     let cache           = NSCache<NSString, UIImage>()
     let decoder         = JSONDecoder()
     
-    let urlString = "https://api.github.com/users/followers?per_page=100&page=1"
-    let baseURL = "https://api.github.com"
-    
     private init() {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dateDecodingStrategy = .iso8601
@@ -25,7 +22,6 @@ struct NetworkManager {
         guard let url =  endpoints?.url else {
             throw GFError.invalidUserName
         }
-        print("Our URL \(url)")
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
             throw GFError.invalidResponse
@@ -37,9 +33,8 @@ struct NetworkManager {
         }
     }
     
-    func getUsers(userName: String) async throws -> Users {
-        let endpoints = baseURL + "/users/\(userName)"
-        guard let url = URL(string: endpoints) else {
+    func getUsers(endpoints: Endpoints) async throws -> Users {
+        guard let url = endpoints.url else {
             throw GFError.invalidUserName
         }
         let (data, response) = try await URLSession.shared.data(from: url)

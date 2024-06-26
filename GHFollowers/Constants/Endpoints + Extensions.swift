@@ -17,6 +17,10 @@ extension Endpoints {
         return Endpoints(path: "/users/\(userName)/followers", queryParameters: [URLQueryItem(name: "per_page", value: "100"),
             URLQueryItem(name: "page", value: "\(page)")])
     }
+    static func getUsers(userName: String,page: Int)->Endpoints {
+        return Endpoints(path: "/users/\(userName)", queryParameters: [URLQueryItem(name: "per_page", value: "100"),
+        URLQueryItem(name: "page", value: "\(page)")])
+    }
 }
 
 extension Endpoints {
